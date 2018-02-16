@@ -29,7 +29,6 @@
     <dependency>
       <groupId>com.epam.brest.cource</groupId>
       <artifactId>utils</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
   </dependencies>
