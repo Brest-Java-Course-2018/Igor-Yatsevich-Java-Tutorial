@@ -34,9 +34,19 @@ public class DBUtils {
 
     }
 
-    public void addUser(Connection connection, String login, String password, String description) throws SQLException {
+    public int addUser(Connection connection, String login, String password, String description) throws SQLException {
 
         System.out.println(String.format("Add user: %s: ", login));
+
+        if (connection == null)
+
+            return -2; //Connection not defined;
+
+        if ((login == null || login.length() == 0) ||
+                (password == null || password.length() == 0) ||
+                (description == null || description.length() == 0))
+
+            return -1; //Input parameter error;
 
         String newUser = "INSERT INTO app_user (login, password, description) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = connection.prepareStatement(newUser);
@@ -44,7 +54,8 @@ public class DBUtils {
         preparedStatement.setString(1, login);
         preparedStatement.setString(2, password);
         preparedStatement.setString(3, description);
-        preparedStatement.executeUpdate();
+
+        return preparedStatement.executeUpdate();
 
     }
 
@@ -63,6 +74,19 @@ public class DBUtils {
                                                                     resultSet.getString("description")));
 
         }
+
+    }
+
+    public int deleteUser(Connection connection, Integer user_id) throws SQLException {
+
+        System.out.println("Deleting user with id: " + user_id + ";");
+
+        String remove_user = "DELETE FROM app_user WHERE user_id = ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(remove_user);
+
+        preparedStatement.setString(1, user_id.toString());
+
+        return preparedStatement.executeUpdate();
 
     }
 
