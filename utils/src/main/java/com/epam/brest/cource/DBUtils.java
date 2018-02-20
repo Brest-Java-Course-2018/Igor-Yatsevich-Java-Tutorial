@@ -11,11 +11,12 @@ public class DBUtils {
     /**
      * Get connection to DB.
      *
-     * @return Connection
+     * @return Instance of class Connection, or null if connection is not defined;
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
+    public Connection getConnection()
+            throws ClassNotFoundException, SQLException {
 
         System.out.println("Connect to DB.");
         String databaseURL = "jdbc:h2:mem:test_db;MODE=MYSQL;DB_CLOSE_DELAY=-1";
@@ -31,10 +32,11 @@ public class DBUtils {
     /**
      * Create app_user table in DB.
      *
-     * @param connection
+     * @param _connection
      * @throws SQLException
      */
-    public void createUserTable(Connection connection) throws SQLException {
+    public void createUserTable(Connection _connection)
+            throws SQLException {
 
         System.out.println("Create app_user table.");
 
@@ -45,7 +47,7 @@ public class DBUtils {
                 "description VARCHAR(255) NULL," +
                 "PRIMARY KEY (user_id))";
 
-        try (Statement statement = connection.createStatement()) {
+        try (Statement statement = _connection.createStatement()) {
 
             statement.executeUpdate(createTable);
         }
@@ -55,52 +57,60 @@ public class DBUtils {
     /**
      * Add user into app_user table in DB.
      *
-     * @param connection
-     * @param login
-     * @param password
-     * @param description
-     * @return check_transaction_result
+     * @param _connection
+     * @param _login
+     * @param _password
+     * @param _description
+     * @return Value which expressed status of operation.
+     * If value is equal to:
+     * * '-3' then connection has null value or not defined;
+     * * '-2' then input String parameters has a null value or not defined;
+     * * '-1' then input String parameters has a zero length;
+     * * '0' then query is not executed;
+     * * '1' then user successfully added;
      * @throws SQLException
      */
-    public int addUser(Connection connection, String login, String password, String description) throws SQLException {
+    public int addUser(Connection _connection,
+                       final String _login,
+                       final String _password,
+                       final String _description)
+            throws SQLException {
 
-        System.out.println(String.format("Add user: %s: ", login));
+        if (_connection == null)
+            return -3;
 
-        if (connection == null)
+        if (_login == null || _password == null || _description == null)
+            return -2;
 
-            return -2; //Connection not defined;
-
-        if (login == null || password == null || description == null)
-
+        if (_login.length() == 0 || _password.length() == 0 || _description.length() == 0)
             return -1;
 
-        if (login.length() == 0 || password.length() == 0 || description.length() == 0)
-
-            return -1; //Input parameter error;
+        System.out.println(String.format("Add user: %s: ", _login));
 
         String newUser = "INSERT INTO app_user (login, password, description) VALUES (?, ?, ?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(newUser);
+        PreparedStatement preparedStatement = _connection.prepareStatement(newUser);
 
-        preparedStatement.setString(1, login);
-        preparedStatement.setString(2, password);
-        preparedStatement.setString(3, description);
+        preparedStatement.setString(1, _login);
+        preparedStatement.setString(2, _password);
+        preparedStatement.setString(3, _description);
 
-        int check_transaction_result = preparedStatement.executeUpdate();
+        int transact_status = preparedStatement.executeUpdate();
 
-        return check_transaction_result;
+        return transact_status;
 
     }
 
     /**
      * Print informtion about all users in app_user table.
      *
-     * @param connection
+     * @param _connection
      * @throws SQLException
      */
-    public void getUser(Connection connection) throws SQLException {
+    public void getUser(Connection _connection)
+            throws SQLException {
 
         String getRecords = "SELECT user_id, login, description FROM app_user ORDER BY user_id";
-        Statement statement = connection.createStatement();
+        Statement statement = _connection.createStatement();
         ResultSet resultSet = statement.executeQuery(getRecords);
 
         System.out.println("Users:");
@@ -119,25 +129,41 @@ public class DBUtils {
     /**
      * Delete user from table app_user in DB.
      *
-     * @param connection
-     * @param user_id
-     * @return check_transaction_status
+     * @param _connection
+     * @param _user_id
+     * @return Value which expressed status of operation.
+     * If value is equal to:
+     * * '-3' then connection has null value or not defined;
+     * * '-2' then input Integer parameters has a null value or not defined;
+     * * '-1' then input Integer parameters has a negative value or zero;
+     * * '0' then query is not executed;
+     * * '1' then user successfully deleted;
      * @throws SQLException
      */
-    public int deleteUser(Connection connection, final Integer user_id)
+    public int deleteUser(Connection _connection,
+                          final Integer _user_id)
             throws SQLException {
 
-        System.out.println("Deleting user with id: " + user_id + ";");
+        if (_connection == null)
+            return -3;
+
+        if (_user_id == null)
+            return -2;
+
+        if (_user_id <= 0)
+            return -1;
+
+        System.out.println("Deleting user with id: " + _user_id + ";");
 
         String remove_user = "DELETE FROM app_user WHERE user_id = ?";
         PreparedStatement preparedStatement =
-                connection.prepareStatement(remove_user);
+                _connection.prepareStatement(remove_user);
 
-        preparedStatement.setString(1, user_id.toString());
+        preparedStatement.setString(1, _user_id.toString());
 
-        int check_transaction_status = preparedStatement.executeUpdate();
+        int transact_status = preparedStatement.executeUpdate();
 
-        return check_transaction_status;
+        return transact_status;
     }
 
 }
