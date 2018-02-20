@@ -2,8 +2,19 @@ package com.epam.brest.cource;
 
 import java.sql.*;
 
+/**
+ * DBUtils class for implementation JDBC operations.
+ */
+
 public class DBUtils {
 
+    /**
+     * Get connection to DB.
+     *
+     * @return Connection
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public Connection getConnection() throws ClassNotFoundException, SQLException {
 
         System.out.println("Connect to DB.");
@@ -17,6 +28,12 @@ public class DBUtils {
 
     }
 
+    /**
+     * Create app_user table in DB.
+     *
+     * @param connection
+     * @throws SQLException
+     */
     public void createUserTable(Connection connection) throws SQLException {
 
         System.out.println("Create app_user table.");
@@ -27,6 +44,7 @@ public class DBUtils {
                 "password VARCHAR(255) NOT NULL," +
                 "description VARCHAR(255) NULL," +
                 "PRIMARY KEY (user_id))";
+
         try (Statement statement = connection.createStatement()) {
 
             statement.executeUpdate(createTable);
@@ -34,6 +52,16 @@ public class DBUtils {
 
     }
 
+    /**
+     * Add user into app_user table in DB.
+     *
+     * @param connection
+     * @param login
+     * @param password
+     * @param description
+     * @return check_transaction_result
+     * @throws SQLException
+     */
     public int addUser(Connection connection, String login, String password, String description) throws SQLException {
 
         System.out.println(String.format("Add user: %s: ", login));
@@ -42,9 +70,11 @@ public class DBUtils {
 
             return -2; //Connection not defined;
 
-        if ((login == null || login.length() == 0) ||
-                (password == null || password.length() == 0) ||
-                (description == null || description.length() == 0))
+        if (login == null || password == null || description == null)
+
+            return -1;
+
+        if (login.length() == 0 || password.length() == 0 || description.length() == 0)
 
             return -1; //Input parameter error;
 
@@ -55,10 +85,18 @@ public class DBUtils {
         preparedStatement.setString(2, password);
         preparedStatement.setString(3, description);
 
-        return preparedStatement.executeUpdate();
+        int check_transaction_result = preparedStatement.executeUpdate();
+
+        return check_transaction_result;
 
     }
 
+    /**
+     * Print informtion about all users in app_user table.
+     *
+     * @param connection
+     * @throws SQLException
+     */
     public void getUser(Connection connection) throws SQLException {
 
         String getRecords = "SELECT user_id, login, description FROM app_user ORDER BY user_id";
@@ -69,25 +107,37 @@ public class DBUtils {
 
         while (resultSet.next()) {
 
-            System.out.println(String.format("User: %s, %s, %s", resultSet.getInt("user_id"),
-                                                                    resultSet.getString("login"),
-                                                                    resultSet.getString("description")));
+            System.out.println(String.format("User: %s, %s, %s",
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("login"),
+                    resultSet.getString("description")));
 
         }
 
     }
 
-    public int deleteUser(Connection connection, Integer user_id) throws SQLException {
+    /**
+     * Delete user from table app_user in DB.
+     *
+     * @param connection
+     * @param user_id
+     * @return check_transaction_status
+     * @throws SQLException
+     */
+    public int deleteUser(Connection connection, final Integer user_id)
+            throws SQLException {
 
         System.out.println("Deleting user with id: " + user_id + ";");
 
         String remove_user = "DELETE FROM app_user WHERE user_id = ?";
-        PreparedStatement preparedStatement = connection.prepareStatement(remove_user);
+        PreparedStatement preparedStatement =
+                connection.prepareStatement(remove_user);
 
         preparedStatement.setString(1, user_id.toString());
 
-        return preparedStatement.executeUpdate();
+        int check_transaction_status = preparedStatement.executeUpdate();
 
+        return check_transaction_status;
     }
 
 }
