@@ -11,9 +11,9 @@
     </parent>
 
     <name>model</name>
-    <groupId>com.epam.brest.cource</groupId>
+    <groupId>com.epam.brest.cource.model</groupId>
+    <version>${parent.version}</version>
     <artifactId>model</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <dependencies>
 
