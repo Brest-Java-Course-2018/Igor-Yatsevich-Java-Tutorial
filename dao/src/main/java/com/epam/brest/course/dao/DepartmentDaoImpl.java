@@ -109,7 +109,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 
-        mapSqlParameterSource.addValue("departmentId", id);         
+        mapSqlParameterSource.addValue("departmentId", id);
 
         namedParameterJdbcTemplate.update(DELETE_DEPARTMENT_SQL, mapSqlParameterSource);
 

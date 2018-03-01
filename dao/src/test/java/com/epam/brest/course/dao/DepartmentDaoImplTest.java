@@ -2,15 +2,13 @@ package com.epam.brest.course.dao;
 
 import com.epam.brest.course.model.Department;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-db-spring.xml",
@@ -28,7 +26,7 @@ public class DepartmentDaoImplTest {
 
     }
 
-    @org.junit.Test
+    @org.junit.Test(expected = EmptyResultDataAccessException.class)
     public void getDepartmentById() {
 
         Department department = departmentDao.getDepartmentById(1);
@@ -40,10 +38,11 @@ public class DepartmentDaoImplTest {
                 .equals("Distribution"));
         Assert.assertTrue(department.getDescription()
                 .equals("Distribution performs"));
+        departmentDao.getDepartmentById(500);
 
     }
 
-    @org.junit.Test
+    @org.junit.Test(expected = EmptyResultDataAccessException.class)
     public void getDepartmentByName() {
 
         Department department = departmentDao.getDepartmentByName("Distribution");
@@ -55,6 +54,7 @@ public class DepartmentDaoImplTest {
                 .equals("Distribution"));
         Assert.assertTrue(department.getDescription()
                 .equals("Distribution performs"));
+        departmentDao.getDepartmentByName("RUDERANT_VALUE");
 
     }
 
@@ -103,29 +103,9 @@ public class DepartmentDaoImplTest {
 
     }
 
-    @org.junit.Test(expected = RuntimeException.class)
-    public void deleteDepartment() {
-
-        Department department = new Department();
-
-        department.setDepartmentName("Development");
-        department.setDescription("Perform developing applications");
-
-        Assert.assertNotNull(departmentDao.addDepartment(department));
-
-        departmentDao.deleteDepartment(1);
-
-        Department after_delete_department =
-                departmentDao.getDepartmentById(1);
-
-        Assert.assertTrue(after_delete_department.getDepartmentId()
-                .equals(1));
-        Assert.assertTrue(after_delete_department.getDepartmentName()
-                .equals(department.getDepartmentName()));
-        Assert.assertTrue(after_delete_department.getDescription()
-                .equals(department.getDescription()));
-
-        departmentDao.deleteDepartment(1);
+    @org.junit.Test(expected = EmptyResultDataAccessException.class)
+        public void deleteDepartment() {
+        
 
     }
 }
