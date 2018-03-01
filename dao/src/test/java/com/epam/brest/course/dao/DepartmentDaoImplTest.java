@@ -34,9 +34,12 @@ public class DepartmentDaoImplTest {
         Department department = departmentDao.getDepartmentById(1);
 
         Assert.assertNotNull(department);
-        Assert.assertTrue(department.getDepartmentId().equals(1));
-        Assert.assertTrue(department.getDepartmentName().equals("Distribution"));
-        Assert.assertTrue(department.getDescription().equals("Distribution performs"));
+        Assert.assertTrue(department.getDepartmentId()
+                .equals(1));
+        Assert.assertTrue(department.getDepartmentName()
+                .equals("Distribution"));
+        Assert.assertTrue(department.getDescription()
+                .equals("Distribution performs"));
 
     }
 
@@ -77,7 +80,7 @@ public class DepartmentDaoImplTest {
 
     }
 
-    @Test
+    @org.junit.Test
     public void updateDepartment() {
 
         Department department = new Department();
@@ -97,6 +100,32 @@ public class DepartmentDaoImplTest {
                 .equals(department.getDepartmentName()));
         Assert.assertTrue(updated_department.getDescription()
                 .equals(department.getDescription()));
+
+    }
+
+    @org.junit.Test(expected = RuntimeException.class)
+    public void deleteDepartment() {
+
+        Department department = new Department();
+
+        department.setDepartmentName("Development");
+        department.setDescription("Perform developing applications");
+
+        Assert.assertNotNull(departmentDao.addDepartment(department));
+
+        departmentDao.deleteDepartment(1);
+
+        Department after_delete_department =
+                departmentDao.getDepartmentById(1);
+
+        Assert.assertTrue(after_delete_department.getDepartmentId()
+                .equals(1));
+        Assert.assertTrue(after_delete_department.getDepartmentName()
+                .equals(department.getDepartmentName()));
+        Assert.assertTrue(after_delete_department.getDescription()
+                .equals(department.getDescription()));
+
+        departmentDao.deleteDepartment(1);
 
     }
 }
