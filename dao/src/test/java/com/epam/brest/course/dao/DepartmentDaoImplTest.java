@@ -46,9 +46,12 @@ public class DepartmentDaoImplTest {
         Department department = departmentDao.getDepartmentByName("Distribution");
 
         Assert.assertNotNull(department);
-        Assert.assertTrue(department.getDepartmentId().equals(1));
-        Assert.assertTrue(department.getDepartmentName().equals("Distribution"));
-        Assert.assertTrue(department.getDescription().equals("Distribution performs"));
+        Assert.assertTrue(department.getDepartmentId()
+                .equals(1));
+        Assert.assertTrue(department.getDepartmentName()
+                .equals("Distribution"));
+        Assert.assertTrue(department.getDescription()
+                .equals("Distribution performs"));
 
     }
 
@@ -62,13 +65,38 @@ public class DepartmentDaoImplTest {
 
         Assert.assertNotNull(departmentDao.addDepartment(department));
 
-        department = departmentDao.getDepartmentById(2);
+        Department added_department = departmentDao.getDepartmentById(2);
 
-        Assert.assertNotNull(department);
-        Assert.assertTrue(department.getDepartmentId().equals(2));
-        Assert.assertTrue(department.getDepartmentName().equals("Development"));
-        Assert.assertTrue(department.getDescription().equals("Perform developing applications"));
+        Assert.assertNotNull(added_department);
+        Assert.assertTrue(added_department.getDepartmentId()
+                .equals(2));
+        Assert.assertTrue(added_department.getDepartmentName()
+                .equals(department.getDepartmentName()));
+        Assert.assertTrue(added_department.getDescription()
+                .equals(department.getDescription()));
 
     }
 
+    @Test
+    public void updateDepartment() {
+
+        Department department = new Department();
+
+        department.setDepartmentId(1);
+        department.setDepartmentName("Drugs distribution");
+        department.setDescription("Selling drugs for arctic bears.");
+
+        departmentDao.updateDepartment(department);
+
+        Department updated_department =
+                departmentDao.getDepartmentByName(department.getDepartmentName());
+
+        Assert.assertTrue(updated_department.getDepartmentId()
+                .equals(department.getDepartmentId()));
+        Assert.assertTrue(updated_department.getDepartmentName()
+                .equals(department.getDepartmentName()));
+        Assert.assertTrue(updated_department.getDescription()
+                .equals(department.getDescription()));
+
+    }
 }
