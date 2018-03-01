@@ -16,10 +16,15 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     private final String GET_DEPARTMENT_SQL = "SELECT departmentId, departmentName, description " +
             "FROM department";
     private final String GET_DEPARTMENT_BY_ID_SQL = "SELECT departmentId, departmentName, description " +
             "FROM department WHERE departmentID = :departmentId";
+    private final String GET_DEPARTMENT_BY_NAME_SQL = "SELECT departmentId, departmentName, description " +
+            "FROM department WHERE departmentName = :departmentName";
+    private final String ADD_DEPARTMENT_SQL = "INSERT INTO department (departmentName, description) " +
+            "VALUES (:departmentName, :description)";
 
     public DepartmentDaoImpl(DataSource dataSource) {
 
@@ -30,7 +35,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public List<Department> getDepartments() {
+
         List<Department> departments = jdbcTemplate.query(GET_DEPARTMENT_SQL, new DepartmentRowMapper());
+
         return departments;
 
     }
@@ -49,8 +56,32 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
+    public Department getDepartmentByName(String departmentName) {
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource.addValue("departmentName", departmentName);
+
+        Department department = namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_NAME_SQL,
+                mapSqlParameterSource,
+                new DepartmentRowMapper());
+
+        return department;
+
+    }
+
+    @Override
     public Department addDepartment(Department department) {
-        return null;
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource.addValue("departmentName", department.getDepartmentName());
+        mapSqlParameterSource.addValue("description", department.getDescription());
+
+        namedParameterJdbcTemplate.update(ADD_DEPARTMENT_SQL, mapSqlParameterSource);
+
+        return department;
+
     }
 
     @Override
@@ -67,7 +98,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
         @Override
         public Department mapRow(ResultSet resultSet, int i) throws SQLException {
+
             Department department = new Department();
+
             department.setDepartmentId(resultSet.getInt(1));
             department.setDepartmentName(resultSet.getString(2));
             department.setDescription(resultSet.getString(3));

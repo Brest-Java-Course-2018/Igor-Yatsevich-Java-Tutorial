@@ -1,2 +1,2 @@
 INSERT INTO department (departmentName, description)
-VALUES ('Distribution', 'Distribution D');
+VALUES ('Distribution', 'Distribution performs');

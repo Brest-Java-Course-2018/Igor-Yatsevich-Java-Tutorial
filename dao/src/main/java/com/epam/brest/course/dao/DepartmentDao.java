@@ -12,6 +12,7 @@ public interface DepartmentDao {
     List<Department> getDepartments();
 
     Department getDepartmentById(Integer departmentId);
+    Department getDepartmentByName(String departmentName);
     Department addDepartment(Department department);
 
     void updteDepartment(Department department);

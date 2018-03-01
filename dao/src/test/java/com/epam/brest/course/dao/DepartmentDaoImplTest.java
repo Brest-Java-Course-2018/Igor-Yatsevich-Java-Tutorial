@@ -2,6 +2,7 @@ package com.epam.brest.course.dao;
 
 import com.epam.brest.course.model.Department;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
 public class DepartmentDaoImplTest {
 
     @Autowired
-    DepartmentDao departmentDao;
+    private DepartmentDao departmentDao;
 
     @org.junit.Test
     public void getDepartments() {
@@ -31,11 +32,43 @@ public class DepartmentDaoImplTest {
     public void getDepartmentById() {
 
         Department department = departmentDao.getDepartmentById(1);
-        Assert.assertNotNull(department);
 
+        Assert.assertNotNull(department);
         Assert.assertTrue(department.getDepartmentId().equals(1));
         Assert.assertTrue(department.getDepartmentName().equals("Distribution"));
-        Assert.assertTrue(department.getDescription().equals("Distribution D"));
+        Assert.assertTrue(department.getDescription().equals("Distribution performs"));
 
     }
+
+    @org.junit.Test
+    public void getDepartmentByName() {
+
+        Department department = departmentDao.getDepartmentByName("Distribution");
+
+        Assert.assertNotNull(department);
+        Assert.assertTrue(department.getDepartmentId().equals(1));
+        Assert.assertTrue(department.getDepartmentName().equals("Distribution"));
+        Assert.assertTrue(department.getDescription().equals("Distribution performs"));
+
+    }
+
+    @org.junit.Test
+    public void addDepartment() {
+
+        Department department = new Department();
+
+        department.setDepartmentName("Development");
+        department.setDescription("Perform developing applications");
+
+        Assert.assertNotNull(departmentDao.addDepartment(department));
+
+        department = departmentDao.getDepartmentById(2);
+
+        Assert.assertNotNull(department);
+        Assert.assertTrue(department.getDepartmentId().equals(2));
+        Assert.assertTrue(department.getDepartmentName().equals("Development"));
+        Assert.assertTrue(department.getDescription().equals("Perform developing applications"));
+
+    }
+
 }
