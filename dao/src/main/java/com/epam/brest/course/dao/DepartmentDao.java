@@ -15,7 +15,7 @@ public interface DepartmentDao {
     Department getDepartmentByName(String departmentName);
     Department addDepartment(Department department);
 
-    void updteDepartment(Department department);
+    void updateDepartment(Department department);
     void deleteDepartment(Integer id);
 
 }

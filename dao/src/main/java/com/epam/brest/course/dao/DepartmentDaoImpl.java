@@ -25,6 +25,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
             "FROM department WHERE departmentName = :departmentName";
     private final String ADD_DEPARTMENT_SQL = "INSERT INTO department (departmentName, description) " +
             "VALUES (:departmentName, :description)";
+    private final String UPDATE_DEPARTMENT_SQL = "UPDATE department " +
+            "SET departmentName = :departmentName, description = :description " +
+            "WHERE departmentId = :departmentId";
 
     public DepartmentDaoImpl(DataSource dataSource) {
 
@@ -44,11 +47,11 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public Department getDepartmentById(Integer departmentId) {
-        SqlParameterSource nalmedParameters =
+        SqlParameterSource namedParameters =
                 new MapSqlParameterSource("departmentId", departmentId);
         Department department =
                 namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID_SQL,
-                        nalmedParameters,
+                        namedParameters,
                         new DepartmentRowMapper());
 
         return department;
@@ -80,12 +83,22 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
         namedParameterJdbcTemplate.update(ADD_DEPARTMENT_SQL, mapSqlParameterSource);
 
-        return department;
+        Department added_department = getDepartmentByName(department.getDepartmentName());
+
+        return added_department;
 
     }
 
     @Override
-    public void updteDepartment(Department department) {
+    public void updateDepartment(Department department) {
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource.addValue("departmentId", department.getDepartmentId());
+        mapSqlParameterSource.addValue("departmentName", department.getDepartmentName());
+        mapSqlParameterSource.addValue("description", department.getDescription());
+
+        namedParameterJdbcTemplate.update(UPDATE_DEPARTMENT_SQL, mapSqlParameterSource);
 
     }
 
