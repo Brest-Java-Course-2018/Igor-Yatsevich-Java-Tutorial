@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.epam.brest.cource</groupId>
+    <groupId>com.epam.brest.course</groupId>
     <artifactId>sampleuserapp</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -63,19 +63,19 @@
             </dependency>
 
             <dependency>
-                <groupId>com.epam.brest.cource.model</groupId>
+                <groupId>com.epam.brest.course</groupId>
                 <artifactId>model</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.epam.brest.cource.dao</groupId>
+                <groupId>com.epam.brest.course</groupId>
                 <artifactId>dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.epam.brest.cource</groupId>
+                <groupId>com.epam.brest.course</groupId>
                 <artifactId>test-db</artifactId>
                 <version>${project.version}</version>
                 <scope>test</scope>
@@ -93,26 +93,31 @@
     <build>
         <pluginManagement>
             <plugins>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.7.0</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.7</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
                     <version>3.0.5</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>3.0.0</version>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
@@ -145,6 +150,7 @@
         </pluginManagement>
 
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -264,6 +270,7 @@
 
     <reporting>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
