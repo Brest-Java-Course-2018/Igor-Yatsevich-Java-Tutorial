@@ -28,6 +28,8 @@ public class DepartmentDaoImpl implements DepartmentDao {
     private final String UPDATE_DEPARTMENT_SQL = "UPDATE department " +
             "SET departmentName = :departmentName, description = :description " +
             "WHERE departmentId = :departmentId";
+    private final String DELETE_DEPARTMENT_SQL = "DELETE FROM department " +
+            "WHERE departmentId = :departmentId";
 
     public DepartmentDaoImpl(DataSource dataSource) {
 
@@ -104,6 +106,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     @Override
     public void deleteDepartment(Integer id) {
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        mapSqlParameterSource.addValue("departmentId", id);         
+
+        namedParameterJdbcTemplate.update(DELETE_DEPARTMENT_SQL, mapSqlParameterSource);
 
     }
 
