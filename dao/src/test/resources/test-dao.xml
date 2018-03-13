@@ -10,11 +10,11 @@
     </bean>
 
     <bean id="departmentDao" class="com.epam.brest.course.dao.DepartmentDaoImpl">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
+       <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
 
-    <!--<bean id="employeeDao" class="com.epam.brest.course.dao.EmployeeDaoImpl">-->
-        <!--<property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>-->
-    <!--</bean>-->
+    <bean id="employeeDao" class="com.epam.brest.course.dao.EmployeeDaoImpl">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
 
 </beans>

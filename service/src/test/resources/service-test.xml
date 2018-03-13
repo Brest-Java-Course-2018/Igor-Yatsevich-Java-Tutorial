@@ -9,7 +9,6 @@
         <constructor-arg name="dataSource" ref="dataSource"/>
     </bean>
 
-
     <bean id="departmentDao" class="com.epam.brest.course.dao.DepartmentDaoImpl">
         <constructor-arg ref="namedParameterJdbcTemplate"/>
     </bean>
@@ -17,6 +16,5 @@
     <bean id="departmentService" class="com.epam.brest.course.service.DepartmentServiceImpl">
         <constructor-arg ref="departmentDao"/>
     </bean>
-
 
 </beans>

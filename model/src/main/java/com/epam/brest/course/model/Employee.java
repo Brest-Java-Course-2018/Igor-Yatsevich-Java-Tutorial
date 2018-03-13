@@ -1,18 +1,30 @@
 package com.epam.brest.course.model;
 
 /**
- * TEST COMMENT
+ * POJO Employee for model.
  */
 public class Employee {
 
     private Integer employeeId;
+
     private String employeeName;
+
     private Integer salary;
+
     private Integer departmentId;
 
+    public Employee() {
+    }
+
+    public Employee(String employeeName, Integer salary, Integer departmentId) {
+        this.employeeName = employeeName;
+        this.salary = salary;
+        this.departmentId = departmentId;
+    }
+
     /**
-     * TEST COMMENT FOR METHOD
-     * @return EMPLOYEE ID
+     * Get Employee Id.
+     * @return employeeId.
      */
     public Integer getEmployeeId() {
         return employeeId;
@@ -47,10 +59,10 @@ public class Employee {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Employee{" +
                 "employeeId=" + employeeId +
-                ", employeeName='" + employeeName + '\'' +
+                ", employeeName=" + employeeName +
                 ", salary=" + salary +
                 ", departmentId=" + departmentId +
                 '}';

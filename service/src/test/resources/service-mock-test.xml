@@ -4,13 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+
     <bean id="departmentDao" class="org.easymock.EasyMock" factory-method="createMock">
-        <constructor-arg ref="com.epam.brest.course.dao.DepartmentDao"/>
+        <constructor-arg value="com.epam.brest.course.dao.DepartmentDao"/>
     </bean>
 
     <bean id="departmentService" class="com.epam.brest.course.service.DepartmentServiceImpl">
         <constructor-arg ref="departmentDao"/>
     </bean>
-
 
 </beans>
