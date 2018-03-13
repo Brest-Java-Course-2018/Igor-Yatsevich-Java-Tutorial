@@ -39,7 +39,6 @@ public class DepartmentDaoImpl implements DepartmentDao {
     @Value("${department.delete}")
     private String DELETE_DEPARTMENT_SQL;
 
-
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
