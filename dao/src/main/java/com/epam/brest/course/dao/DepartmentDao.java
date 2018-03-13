@@ -1,7 +1,6 @@
 package com.epam.brest.course.dao;
 
 import com.epam.brest.course.model.Department;
-
 import java.util.List;
 
 /**
